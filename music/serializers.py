@@ -24,6 +24,16 @@ class PostSerializer(serializers.ModelSerializer):
         post.tags.add(*tags)
         return post
 
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title')
+        instance.save()
+        return super().update(instance, validated_data)
+
+    def delete(self, instance, validated_data):
+        instance.title = validated_data.get('title')
+        instance.save()
+        return validated_data.pop(instance.title)
+
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['comments'] = CommentSerializer(
@@ -50,6 +60,16 @@ class CommentSerializer(serializers.ModelSerializer):
         user = request.user
         comment = Comment.objects.create(author=user, **validated_data)
         return comment
+
+    def update(self, instance, validated_data):
+        instance.comment = validated_data.get('comment')
+        instance.save()
+        return super().update(instance, validated_data)
+
+    def delete(self, instance, validated_data):
+        instance.comment = validated_data.get('comment')
+        instance.save()
+        return validated_data.pop(instance.comment)
 
     class Meta:
         model = Comment
@@ -80,6 +100,11 @@ class RatingSerializer(serializers.ModelSerializer):
                 'Рейтинг должен быть от 1 до 5'
             )
         return rating
+
+    def delete(self, instance, validated_data):
+        instance.rating = validated_data.get('rating')
+        instance.save()
+        return validated_data.pop(instance.rating)
 
 
 # class ImageSerializer(serializers.ModelSerializer):
@@ -116,21 +141,21 @@ class BasketSerializer(serializers.ModelSerializer):
 
 
 class VipSerializer(serializers.ModelSerializer):
-    email = serializers.CharField()
+    # email = serializers.CharField()
     author = serializers.ReadOnlyField(source='author.name')
 
-    def validate(self, data):
-        email = data.get('email')
-        if not User.objects.filter(email=email).exists():
-            raise serializers.ValidationError('Пользователь не найден')
-        return data
-
-    def activate(self):
-        email = self.validated_data.get('email')
-        user = User.objects.get(email=email)
-        user.is_active = True
-        user.save()
-        '''============================='''
+    # def validate(self, data):
+    #     email = data.get('email')
+    #     if not User.objects.filter(email=email).exists():
+    #         raise serializers.ValidationError('Пользователь не найден')
+    #     return data
+    #
+    # def activate(self):
+    #     email = self.validated_data.get('email')
+    #     user = User.objects.get(email=email)
+    #     user.is_active = True
+    #     user.save()
+    '''============================='''
 
     class Meta:
         model = Vip
@@ -168,6 +193,11 @@ class HistorySerializer(serializers.ModelSerializer):
         if self.Meta.model.objects.filter(history=history).exists():
             raise serializers.ValidationError('Уже сушествует в истории')
         return history
+
+    def delete(self, instance, validated_data):
+        instance.history = validated_data.get('history')
+        instance.save()
+        return validated_data.pop(instance.history)
     #
     # def update(self, instance, validated_data):
     #     instance.history = validated_data.get('history')

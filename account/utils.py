@@ -7,5 +7,5 @@ def send_activation_code(email, activation_code):
     send_mail('Активация аккаунта',
                 message,
                 'jiulwinchester@gmail.com',
-                [email]
+                [email],
     )

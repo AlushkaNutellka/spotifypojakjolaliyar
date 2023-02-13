@@ -4,13 +4,6 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from . import  views
-
-app_name = 'users'
-urlpatterns = [
-    re_path('api/register-by-access-token/' + r'social/(?P<backend>[^/]+)/$', views.register_by_access_token),
-    path('api/authentication-test/', views.authentication_test),
-]
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -26,7 +19,6 @@ urlpatterns = [
     path('docs/', schema_view.with_ui('swagger')),
     path('account/', include('account.urls')),
     path('', include('music.urls')),
-
 
 ]
 if settings.DEBUG:

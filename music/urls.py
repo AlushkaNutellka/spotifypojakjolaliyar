@@ -4,16 +4,19 @@ from rest_framework.routers import DefaultRouter
 from django.conf import settings
 from django.conf.urls.static import static
 
-router = DefaultRouter()
-router.register('music', MusicViewSet)
-router.register('comment', CommentView)
-router.register('vip', VipView)
+# router = DefaultRouter()
+# router.register('music', MusicViewSet)
+# router.register('comment', CommentView)
+# router.register('vip', VipView)
 # router.register('image', ImageView)
 
 
 urlpatterns = [
-    path('twoandone/', include(router.urls)),
-    path('stream-track/', StreamingFileAuthorView.as_view()),
+    # path('twoandone/', include(router.urls)),
+    path('music/', MusicViewSet.as_view({'get': 'list'})),
+    path('comment/', CommentView.as_view({'get': 'list'})),
+    path('vip/', VipView.as_view({'get': 'list'}))
+    # path('stream-track/', StreamingFileAuthorView.as_view()),
 
 ]
 

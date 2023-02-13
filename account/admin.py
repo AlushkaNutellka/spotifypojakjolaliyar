@@ -10,4 +10,3 @@ class AdminUser(admin.ModelAdmin):
     list_filter = (
         ('is_staff', admin.BooleanFieldListFilter),
     )
-

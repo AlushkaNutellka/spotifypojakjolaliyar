@@ -4,7 +4,6 @@ from .views import RegistrationView, LoginView, ActivationView, LogoutView, Chan
 
 
 urlpatterns = [
-
     path('register/', RegistrationView.as_view()),
     path('activate/', ActivationView.as_view()),
     path('login/', LoginView.as_view()),
